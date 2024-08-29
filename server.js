@@ -10,12 +10,12 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/users', userRoutes);
-app.use('/rooms', roomRoutes);
-app.use('/reservations', reservationRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/rooms', roomRoutes);
+app.use('/api/reservations', reservationRoutes);
 
 sequelize.sync().then(() => {
   app.listen(process.env.PORT, () => {
-    console.log(`Server running on port ${process.env.PORT}`);
+    console.log(`Server running on port ${process.env.PORT}🔥🔥🔥🔥`);
   });
 });
