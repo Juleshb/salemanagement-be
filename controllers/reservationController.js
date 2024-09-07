@@ -1,5 +1,5 @@
 // controllers/reservationController.js
-const { Reservation, Room } = require('../models');
+const { Reservation, Room, User  } = require('../models');
 const { Op } = require('sequelize');
 
 // Create a new Reservation
@@ -34,7 +34,16 @@ exports.createReservation = async (req, res) => {
 // Get all Reservations
 exports.getAllReservations = async (req, res) => {
   try {
-    const reservations = await Reservation.findAll({ include: [Room] });
+    const reservations = await Reservation.findAll({ include: [
+    {
+      model: Room,
+      as: 'room', // Use 'room' alias here
+    },
+    {
+      model: User,
+      as: 'user', // Use 'user' alias here
+    },
+  ], });
     res.status(200).json(reservations);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -46,11 +55,42 @@ exports.getReservationById = async (req, res) => {
   const { id } = req.params;
   
   try {
-    const reservation = await Reservation.findByPk(id, { include: [Room] });
+    const reservation = await Reservation.findByPk(id, { include: [
+    {
+      model: Room,
+      as: 'room', // Use 'room' alias here
+    },
+    {
+      model: User,
+      as: 'user', // Use 'user' alias here
+    },
+  ], });
     if (!reservation) {
       return res.status(404).json({ error: "Reservation not found" });
     }
     res.status(200).json(reservation);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getReservationsByUser = async (req, res) => {
+  try {
+    const reservations = await Reservation.findAll({
+      where: { user_id: req.user.id },
+      include: [
+        {
+          model: Room,
+          as: 'room', // Specify the alias used in the association
+        },
+        {
+          model: User,
+          as: 'user', // Specify the alias for User association if needed
+        },
+      ],
+    });
+
+    res.status(200).json(reservations);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

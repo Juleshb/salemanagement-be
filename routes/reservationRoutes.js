@@ -6,14 +6,18 @@ const {
   getAllReservations,
   getReservationById,
   updateReservation,
-  deleteReservation
+  deleteReservation,
+  getReservationsByUser
 } = require('../controllers/reservationController');
+
+const authenticateToken = require('../middlewares/authMiddleware');
 
 // CRUD routes
 router.post('/', createReservation);        // Create a new reservation
 router.get('/', getAllReservations);        // Get all reservations
-router.get('/:id', getReservationById);     // Get reservation by ID
-router.put('/:id', updateReservation);      // Update reservation by ID
-router.delete('/:id', deleteReservation);   // Delete reservation by ID
+router.get('/oneby/:id', getReservationById);     // Get reservation by ID
+router.put('/:id', authenticateToken, updateReservation);      // Update reservation by ID
+router.delete('/:id', authenticateToken, deleteReservation);   // Delete reservation by ID
+router.get('/user', authenticateToken, getReservationsByUser);
 
 module.exports = router;
