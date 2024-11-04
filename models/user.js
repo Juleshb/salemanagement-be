@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: 'user', // Default role can be 'user'
+      allowNull: false,
+    },
   });
 
   // Hash the password before saving the user
@@ -34,8 +39,6 @@ module.exports = (sequelize, DataTypes) => {
       as: 'reservations',
     });
   };
-
- 
 
   return User;
 };

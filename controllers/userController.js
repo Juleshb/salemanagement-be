@@ -49,8 +49,8 @@ exports.createUser = async (req, res) => {
 
     const user = await User.create({ name, email, password });
 
-    const { id, createdAt, updatedAt } = user;
-    res.status(201).json({ id, name, email, createdAt, updatedAt });
+    const { id, createdAt, updatedAt, role } = user;
+    res.status(201).json({ id, name, email, createdAt,role, updatedAt });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
